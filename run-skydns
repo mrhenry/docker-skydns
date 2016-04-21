@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+
+set -e
+
+ContainerIP=$(ip add | grep global | sed 's|.*[ ]\([0-9]\+\.[0-9]\+\.[0-9]\+\.[0-9]\+\).*|\1|')
+echo "ContainerIP: $ContainerIP"
+
+export ETCD_MACHINES="http://${ETCD_PORT_4001_TCP_ADDR}:${ETCD_PORT_4001_TCP_PORT}"
+export SKYDNS_ADDR="0.0.0.0:53"
+export SKYDNS_DOMAIN="switch"
+export SKYDNS_NAMESERVERS="8.8.8.8:53,8.8.4.4:53"
+exec /skydns
